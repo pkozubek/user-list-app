@@ -1,0 +1,7 @@
+Input{
+    display: block;
+}
+
+.Invalid{
+    border: 1px solid red;
+}
