@@ -17,6 +17,7 @@ class UserList extends Component{
             showError: false
     }
 
+    
     containsUser=(user)=>{
         for (let i = 0; i < this.state.users.length; i++) {
             if (this.state.users[i].nickname === user.nickname 
@@ -29,10 +30,16 @@ class UserList extends Component{
     }
 
     removeUserFromList = (row)=>{
+        if (row === 'All')
+            this.setState({
+                users: []
+            })
+        else{
         let newUserList = this.state.users;
         newUserList.splice(row,1);
 
         this.setState({users: newUserList});
+        }
     }
 
     formHandler = (userObject)=>{
@@ -102,8 +109,9 @@ class UserList extends Component{
             />
             </Modal>
             {error}
-            <Button click = {this.handleFormShow}>Dodaj Użytkownika</Button>
+            <Button click = {this.handleFormShow}>Add user</Button>
             {userList}
+            {this.state.users.length>0 ? <Button click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>:null}
         </div>);
     }
 }
