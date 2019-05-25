@@ -11,13 +11,13 @@ class UserList extends Component{
     
     state = {
             users:[],
-            valueToAdd: {},
+            valueToAdd: null,
             isFormVisible: false,
             isConfirmationVisible: false,
-            showError: false
+            showError: false,
+            userToDelete: null
     }
 
-    
     containsUser=(user)=>{
         for (let i = 0; i < this.state.users.length; i++) {
             if (this.state.users[i].nickname === user.nickname 
@@ -30,19 +30,29 @@ class UserList extends Component{
     }
 
     removeUserFromList = (row)=>{
-        if (row === 'All')
-            this.setState({
-                users: []
-            })
-        else{
-        let newUserList = this.state.users;
-        newUserList.splice(row,1);
-
-        this.setState({users: newUserList});
-        }
+        this.setState({
+            isConfirmationVisible: true,
+            userToDelete: row
+        })
     }
+    
+    confirmRemoving = ()=>{
+        let newUsersList = [];
 
-    formHandler = (userObject)=>{
+        if(this.state.userToDelete !== 'All'){
+            newUsersList = this.state.users;
+            newUsersList.splice(this.state.userToDelete,1);
+        }        
+
+        this.setState({
+        users: newUsersList,
+        itemToDelete: null,
+        isConfirmationVisible: false
+        });
+    }
+    
+
+    addElementToList = (userObject)=>{
         let isInArray = this.containsUser(userObject); 
         
         if(isInArray){
@@ -74,44 +84,63 @@ class UserList extends Component{
         this.setState({isConfirmationVisible: false, valueToAdd: {}})
     }
 
-    addElementToList = ()=>{
+    confirmAddingElementToList = ()=>{
         let currentUsersArray = this.state.users;
         currentUsersArray.push(this.state.valueToAdd);
 
-        this.setState({users: currentUsersArray, 
+        this.setState({
+            users: currentUsersArray, 
             isConfirmationVisible: false,
-            valueToAdd: {}
+            valueToAdd: null
         });
     }
 
     render(){
         let userList = <div>List is empty - add some users!</div>
-        console.log(this.state.users);
+
         if(this.state.users.length>0){
             userList = this.state.users.map((user,index)=>{
                 return <SingleUser key = {user.nickname} user = {user} delete = {()=>this.removeUserFromList(index)}/>
                 })
         }
 
-        let error = this.state.showError ? <Modal show = {this.state.showError}><h2>Taki uztykownik juz istnieje</h2></Modal> : null;
+        let error = this.state.showError 
+            ? <Modal show = {this.state.showError}><h2>Taki uztykownik juz istnieje</h2></Modal>
+            : null;
+        
+        let confirmation = null;
+        if(this.state.isConfirmationVisible){
+            confirmation = <Confirmation 
+            show = {this.state.isConfirmationVisible}
+            info = {this.state.valueToAdd !== null
+                    ?'Do you want to add this user to List?'
+                    :'Do you want to remove user from List'}
+            onYesClick = {this.state.valueToAdd !== null
+                    ?this.confirmAddingElementToList
+                    :this.confirmRemoving}
+            onNoClick = {this.handleConfirmationCancel}
+            />
+        }
 
         return(
         <div>
-            <Modal show = {this.state.isFormVisible} click = {this.handleFormShow}>
-                <UserForm formHandler = {this.formHandler}/>
+            <Modal 
+            show = {this.state.isFormVisible} 
+            click = {this.handleFormShow}>
+                <UserForm 
+                formHandler = {this.addElementToList}/>
             </Modal>
-            <Modal show = {this.state.isConfirmationVisible}>            
-            <Confirmation 
-            show = {this.state.isConfirmationVisible}
-            info = 'Do you want to add this user to List?'
-            onYesClick = {this.addElementToList}
-            onNoClick = {this.handleConfirmationCancel}
-            />
+            <Modal 
+            show = {this.state.isConfirmationVisible}>            
+                {confirmation}
             </Modal>
             {error}
-            <Button click = {this.handleFormShow}>Add user</Button>
+            <Button 
+            click = {this.handleFormShow}>Add user</Button>
             {userList}
-            {this.state.users.length>0 ? <Button click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>:null}
+            {this.state.users.length>0 ?
+                <Button click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>
+                :null}
         </div>);
     }
 }
