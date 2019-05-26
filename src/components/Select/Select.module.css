@@ -1,0 +1,15 @@
+.Select{
+    width: 60%;
+    margin: 5px auto;
+    -webkit-box-shadow: 0px 0px 30px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 30px -5px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 30px -5px rgba(0,0,0,0.75);  
+    background: rgb(51, 153, 255);
+    color: white;
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.Select label{
+    margin: 5px;
+}

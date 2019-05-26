@@ -1,12 +1,15 @@
 import React from 'react';
-import styles from './Button.module.css'
+import Styles from './Button.module.css'
+import RemoveImage from '../../images/trash.png'
 
 const button = (props) => {
+    let buttonStyle = [Styles.Button, Styles[props.style]];
+
     return <button
         disabled = {props.disabled}
-        //className = {[styles.Button, styles[props.buttonType]].join(' ')}
+        className = {buttonStyle.join(' ')}
         onClick = {props.click}>
-        {props.children}
+        {props.style !== 'Remove'?props.children:<img alt = 'remove' src = {RemoveImage}></img>}
     </button>
 }
 

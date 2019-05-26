@@ -1,5 +1,8 @@
 Input{
     display: block;
+    margin: 5px auto;
+    height: 25px;
+    padding: 5px;
 }
 
 .Invalid{

@@ -8,14 +8,41 @@
     padding: 10px;
     margin: 10px;
     font-weight: bold;
+    text-align: center;
 }
 
-.Button:first-of-type {
-    margin-left: 0;
-    padding-left: 0;
+.Remove{
+    background-color: Transparent;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 5px;
+    border: none;
+    color: white;
+    outline:none;
+}
+
+.Remove img{
+    width: 75px;
+    height: 75px;
 }
 
 .Button:disabled{
-    color: gray;
+    background: lightgray;
+    color: white;
     cursor: not-allowed; 
+}
+
+.Confirm{
+    background: rgb(50, 205, 50);
+    color: white;
+}
+
+.Delete{
+    background: rgb(255, 51, 51);
+    color: white;
+}
+
+.Add{
+    background: rgb(51, 153, 255);
+    color: white;
 }

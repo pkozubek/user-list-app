@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import input from '../../components/Input/Input';
 
 class AddUserForm extends Component{
     state = {
@@ -145,6 +144,7 @@ class AddUserForm extends Component{
                 })
                 }
                 <Button
+                style = 'Confirm'
                 disabled = {!this.state.isFormValid}
                 >
                 Add User!

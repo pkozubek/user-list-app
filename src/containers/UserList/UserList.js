@@ -4,18 +4,36 @@ import SingleUser from '../../components/SingleUser/SingleUser';
 import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import Confirmation from '../../components/Confirmation/Confirmation';
+import Select from '../../components/Select/Select';
 
 import UserForm from '../AddUserForm/AddUserForm';
 
+const OPTIONS = ['nickname', 'email','unsorted'];
+
 class UserList extends Component{
-    
     state = {
-            users:[],
+            users:[{
+                nickname: 'b',
+                email: 'd',
+                ipAdress: '1.1.1.1'
+            },
+            {
+                nickname: 'a',
+                email: 'c',
+                ipAdress: '2.1.1.1'
+            },
+            {
+                nickname: 'z',
+                email: 'a',
+                ipAdress: '2.1.1.1'
+            }],
+
             valueToAdd: null,
             isFormVisible: false,
             isConfirmationVisible: false,
             showError: false,
-            userToDelete: null
+            userToDelete: null,
+            currentlySelected: 'unsorted'
     }
 
     containsUser=(user)=>{
@@ -81,7 +99,7 @@ class UserList extends Component{
     }
 
     handleConfirmationCancel = ()=>{
-        this.setState({isConfirmationVisible: false, valueToAdd: {}})
+        this.setState({isConfirmationVisible: false, valueToAdd: null})
     }
 
     confirmAddingElementToList = ()=>{
@@ -95,9 +113,42 @@ class UserList extends Component{
         });
     }
 
+    compareNickname=( user1, user2 )=>{
+        if ( user1.nickname < user2.nickname ){
+          return -1;
+        }
+        if ( user1.nickname > user2.nickname ){
+          return 1;
+        }
+        return 0;
+    }
+    
+    compareEmail = ( user1, user2 )=>{
+        if ( user1.email < user2.email ){
+          return -1;
+        }
+        if ( user1.email > user2.email ){
+          return 1;
+        }
+        return 0;
+    }
+
+    handleSorting = (event)=>{
+        let sortedUsers = this.state.users;
+
+        if(event.target.value === 'nickname')
+            sortedUsers.sort( this.compareNickname );
+        if(event.target.value === 'email')
+            sortedUsers.sort( this.compareEmail );
+
+        this.setState({
+            currentlySelected: event.target.value,
+            users: sortedUsers
+        })
+    }
+
     render(){
         let userList = <div>List is empty - add some users!</div>
-
         if(this.state.users.length>0){
             userList = this.state.users.map((user,index)=>{
                 return <SingleUser key = {user.nickname} user = {user} delete = {()=>this.removeUserFromList(index)}/>
@@ -124,6 +175,7 @@ class UserList extends Component{
 
         return(
         <div>
+            <h1>List of Users:</h1>
             <Modal 
             show = {this.state.isFormVisible} 
             click = {this.handleFormShow}>
@@ -135,11 +187,18 @@ class UserList extends Component{
                 {confirmation}
             </Modal>
             {error}
-            <Button 
-            click = {this.handleFormShow}>Add user</Button>
+            <Select 
+            val = {this.state.currentlySelected}
+            change = {this.handleSorting}
+            usersCount = {this.state.users.length}
+            options = {OPTIONS}
+            />
             {userList}
+            <Button 
+            style = 'Add'
+            click = {this.handleFormShow}>Add user</Button>
             {this.state.users.length>0 ?
-                <Button click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>
+                <Button style = 'Delete' click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>
                 :null}
         </div>);
     }
