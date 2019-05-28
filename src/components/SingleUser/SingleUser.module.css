@@ -39,3 +39,9 @@
 .Delete{
     width: 25%;
 }
+
+@media (max-width: 600px) {
+    .User{
+        width: 90%;
+    }    
+}
