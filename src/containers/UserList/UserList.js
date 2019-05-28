@@ -195,10 +195,10 @@ class UserList extends Component{
             />
             {userList}
             <Button 
-            style = 'Add'
+            type = 'Add'
             click = {this.handleFormShow}>Add user</Button>
             {this.state.users.length>0 ?
-                <Button style = 'Delete' click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>
+                <Button type = 'Delete' click = {()=>this.removeUserFromList('All')}>Delete All Users</Button>
                 :null}
         </div>);
     }

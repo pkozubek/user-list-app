@@ -144,7 +144,7 @@ class AddUserForm extends Component{
                 })
                 }
                 <Button
-                style = 'Confirm'
+                type = 'Confirm'
                 disabled = {!this.state.isFormValid}
                 >
                 Add User!

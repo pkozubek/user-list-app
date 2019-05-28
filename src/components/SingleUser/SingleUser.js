@@ -13,7 +13,7 @@ const singleUser = (props)=>{
             <p><label>Ip Adress: </label>{props.user.ipAdress}</p>
         </div>
         <div className = {Styles.Delete}>
-            <Button style = 'Remove' click = {props.delete}>Remove</Button>
+            <Button type = 'Remove' click = {props.delete}>Remove</Button>
         </div>
     </div>)
 }
